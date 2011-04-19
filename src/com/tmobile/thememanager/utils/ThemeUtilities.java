@@ -22,10 +22,8 @@ import com.tmobile.themes.provider.ThemeItem;
 import com.tmobile.themes.provider.Themes;
 import com.tmobile.themes.provider.Themes.ThemeColumns;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -34,11 +32,9 @@ import android.content.res.Configuration;
 import android.content.res.CustomTheme;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.SystemProperties;
-import android.provider.Settings;
 import android.util.Log;
 
-public class ThemeUtilities extends Activity {
+public class ThemeUtilities {
 
     /**
      * Applies just the configuration portion of the theme. No wallpapers or
@@ -79,16 +75,10 @@ public class ThemeUtilities extends Activity {
      */
     public static void applyTheme(Context context, ThemeItem theme, Intent request) {
         String themeType = request.getType();
-        ContentResolver cr = context.getContentResolver();
-
         boolean extendedThemeChange =
             request.getBooleanExtra(ThemeManager.EXTRA_EXTENDED_THEME_CHANGE, false);
         boolean dontSetLockWallpaper =
             request.getBooleanExtra(ThemeManager.EXTRA_DONT_SET_LOCK_WALLPAPER, false);
-        boolean themeCompatibilitySignal =
-            request.getBooleanExtra(ThemeManager.EXTRA_THEME_COMPATIBILITY_SIGNAL, false);
-        boolean themeCompatibilityBattery =
-            request.getBooleanExtra(ThemeManager.EXTRA_THEME_COMPATIBILITY_BATTERY, false);
 
         Uri wallpaperUri = null;
         Uri lockWallpaperUri = null;
@@ -154,18 +144,6 @@ public class ThemeUtilities extends Activity {
             RingtoneManager.setActualDefaultRingtoneUri(context, RingtoneManager.TYPE_NOTIFICATION,
                     ThemeManager.SILENT_RINGTONE_URI.equals(notificationRingtoneUri) ? null :
                             notificationRingtoneUri);
-        }
-
-        /* Compatibility for six bar signal and 100 battery */
-        if (themeCompatibilitySignal) {
-            Settings.System.putInt(cr, Settings.System.THEME_COMPATIBILITY_SIGNAL, false ? 1 : 0);
-        } else {
-            Settings.System.putInt(cr, Settings.System.THEME_COMPATIBILITY_SIGNAL, true ? 1 : 0);
-        }
-        if (themeCompatibilityBattery) {
-            Settings.System.putInt(cr, Settings.System.THEME_COMPATIBILITY_BATTERY, false ? 1 : 0);
-        } else {
-            Settings.System.putInt(cr, Settings.System.THEME_COMPATIBILITY_BATTERY, true ? 1 : 0);
         }
 
         applyStyleInternal(context, theme);
