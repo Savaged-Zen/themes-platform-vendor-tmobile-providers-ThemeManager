@@ -32,7 +32,10 @@ import android.content.res.Configuration;
 import android.content.res.CustomTheme;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.provider.Settings;
 import android.util.Log;
+
+import java.io.FileNotFoundException;
 
 public class ThemeUtilities {
 
@@ -74,11 +77,31 @@ public class ThemeUtilities {
      * values.
      */
     public static void applyTheme(Context context, ThemeItem theme, Intent request) {
+        boolean hasModdedBattery;
+        boolean hasModdedSignal;
+
         String themeType = request.getType();
         boolean extendedThemeChange =
             request.getBooleanExtra(ThemeManager.EXTRA_EXTENDED_THEME_CHANGE, false);
         boolean dontSetLockWallpaper =
             request.getBooleanExtra(ThemeManager.EXTRA_DONT_SET_LOCK_WALLPAPER, false);
+
+        // Determins Theme Compatibility switch
+        try {
+            hasModdedBattery = (theme.isThemeBatteryModded().equals("true"));
+        } catch (NullPointerException e){
+           hasModdedBattery = false;
+        }
+        try {
+            hasModdedSignal = (theme.isThemeSignalModded().equals("true"));
+        } catch (NullPointerException e){
+            hasModdedSignal = false;
+        }
+ 
+        Settings.System.putInt(context.getContentResolver(),
+        Settings.System.THEME_COMPATIBILITY_SIGNAL, hasModdedBattery ? 1 : 0);
+        Settings.System.putInt(context.getContentResolver(),
+        Settings.System.THEME_COMPATIBILITY_BATTERY, hasModdedSignal ? 1 : 0);
 
         Uri wallpaperUri = null;
         Uri lockWallpaperUri = null;
