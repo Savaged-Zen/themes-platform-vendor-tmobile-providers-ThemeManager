@@ -126,7 +126,7 @@ public class ThemesProvider extends ContentProvider {
                     ThemeColumns.THUMBNAIL_URI + " TEXT, " +
                     ThemeColumns.PREVIEW_URI + " TEXT, " +
                     ThemeColumns.HAS_HOST_DENSITY + " INTEGER DEFAULT 1, " +
-                    ThemeColumns.HAS_THEME_PACKAGE_SCOPE + " INTEGER DEFAULT 1," +
+                    ThemeColumns.HAS_THEME_PACKAGE_SCOPE + " INTEGER DEFAULT 1, " +
                     ThemeColumns.THEME_HAS_MODDED_BATTERY + " TEXT, " +
                     ThemeColumns.THEME_HAS_MODDED_SIGNAL + " TEXT" +
                     ")");

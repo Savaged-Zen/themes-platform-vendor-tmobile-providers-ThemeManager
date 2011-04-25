@@ -90,7 +90,7 @@ public class ThemeUtilities {
         try {
             hasModdedBattery = (theme.isThemeBatteryModded().equals("true"));
         } catch (NullPointerException e){
-           hasModdedBattery = false;
+            hasModdedBattery = false;
         }
         try {
             hasModdedSignal = (theme.isThemeSignalModded().equals("true"));
@@ -99,9 +99,9 @@ public class ThemeUtilities {
         }
  
         Settings.System.putInt(context.getContentResolver(),
-        Settings.System.THEME_COMPATIBILITY_SIGNAL, hasModdedBattery ? 1 : 0);
+                Settings.System.THEME_COMPATIBILITY_SIGNAL, hasModdedBattery ? 1 : 0);
         Settings.System.putInt(context.getContentResolver(),
-        Settings.System.THEME_COMPATIBILITY_BATTERY, hasModdedSignal ? 1 : 0);
+                Settings.System.THEME_COMPATIBILITY_BATTERY, hasModdedSignal ? 1 : 0);
 
         Uri wallpaperUri = null;
         Uri lockWallpaperUri = null;
